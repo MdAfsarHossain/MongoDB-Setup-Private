@@ -7,6 +7,7 @@
 - [Express-Middleware](https://expressjs.com/en/resources/middleware.html)
 - [Express-Cors](https://expressjs.com/id/resources/middleware/cors.html)
 - [MongoDb-CRUD](https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/)
+- [DotEnv](https://www.npmjs.com/package/dotenv)
 
 ## Server Site SetUp
 
@@ -204,3 +205,155 @@ run().catch(console.dir);
 ```
 
 ## Client Site Setup
+
+### Get Route
+
+```js
+  {
+    path:'/users',
+    element: <Users></Users>,
+    loader: () => fetch('http://localhost:5000/users')
+  },
+```
+
+### Update Route
+
+```js
+  {
+    path: '/update/:id',
+    element: <Update></Update>,
+    loader: ({params}) => fetch(`http://localhost:5000/users/${params.id}`)
+  }
+```
+
+### Create a new data
+
+```js
+const handleAddCoffee = (event) => {
+  event.preventDefault();
+
+  const form = event.target;
+
+  const name = form.name.value;
+  const quantity = form.quantity.value;
+  const supplier = form.supplier.value;
+  const taste = form.taste.value;
+  const category = form.category.value;
+  const details = form.details.value;
+  const photo = form.photo.value;
+
+  const newCoffee = {
+    name,
+    quantity,
+    supplier,
+    taste,
+    category,
+    details,
+    photo,
+    user.email // take the user's email address from the AuthContext
+  };
+
+  // Write here server site code to send data to the server
+};
+
+<form onSubmit={handleAddCoffee}></form>;
+```
+
+### Send data to the server for create a new data
+
+```js
+// send data to the server
+fetch("http://localhost:5000/coffee", {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify(newCoffee),
+})
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    if (data.insertedId) {
+      Swal.fire({
+        title: "Success!",
+        text: "Coffee Added Successfully",
+        icon: "success",
+        confirmButtonText: "Cool",
+      });
+    }
+  });
+```
+
+### Update data field
+
+```js
+const coffee = useLoaderData();
+const { _id, name, quantity, supplier, taste, category, details, photo } =
+  coffee;
+
+// Set the default value to the input data field by using this
+defaultValue = { name };
+defaultValue = { quantity };
+defaultValue = { supplier };
+defaultValue = { taste };
+```
+
+### Send data to the server for update the data
+
+```js
+// send data to the server
+fetch(`http://localhost:5000/coffee/${_id}`, {
+  method: "PUT",
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify(updatedCoffee),
+})
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    if (data.modifiedCount > 0) {
+      Swal.fire({
+        title: "Success!",
+        text: "Coffee Updated Successfully",
+        icon: "success",
+        confirmButtonText: "Cool",
+      });
+    }
+  });
+```
+
+### Delete data
+
+```js
+Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!",
+}).then((result) => {
+  if (result.isConfirmed) {
+    fetch(`http://localhost:5000/coffee/${_id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.deletedCount > 0) {
+          Swal.fire("Deleted!", "Your Coffee has been deleted.", "success");
+          const remaining = coffees.filter((cof) => cof._id !== _id);
+          setCoffees(remaining);
+        }
+      });
+  }
+});
+```
+
+```js
+const CoffeeCard = ({ coffee, coffees, setCoffees }) => {};
+
+// get state by using props from the parent
+```
