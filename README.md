@@ -21,7 +21,7 @@ index.js
 ```
 
 ```js
-npm install express cors mongodb
+npm install express cors mongodb dotenv
 ```
 
 ```js
@@ -42,6 +42,7 @@ nodemon index.js
 ```js
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -75,7 +76,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // Mongodb configuration
 const uri = "mongodb://localhost:27017";
 
-// const uri = "mongodb+srv://afsarhossain:<db_password>@cluster0.b6ov8m0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.b6ov8m0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const uri = "mongodb+srv://${process.env.DB_USER}:{process.env.DB_PASS}@cluster0.b6ov8m0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -141,7 +143,7 @@ app.put("/users/:id", async (req, res) => {
   console.log("Update user: ", user);
 
   const filter = { _id: new ObjectId(id) };
-  const operations = { upsert: true };
+  const options = { upsert: true };
   const updatedUser = {
     $set: {
       name: user.name,
@@ -149,11 +151,7 @@ app.put("/users/:id", async (req, res) => {
     },
   };
 
-  const result = await userCollection.updateOne(
-    filter,
-    updatedUser,
-    operations
-  );
+  const result = await userCollection.updateOne(filter, updatedUser, options);
   res.send(result);
 });
 ```
@@ -171,6 +169,8 @@ app.delete("/users/:id", async (req, res) => {
   res.send(result);
 });
 ```
+
+### MongoDB Setup Code
 
 ```js
 async function run() {
