@@ -380,6 +380,12 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {};
 ## [JWT (JSON Web Token)](https://jwt.io/)
 
 ```js
+## Generate Cookie
+-> node
+-> require('crypto').randomBytes(64).toString('hex')
+```
+
+```js
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 ```
