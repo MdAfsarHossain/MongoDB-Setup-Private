@@ -157,6 +157,23 @@ app.put("/users/:id", async (req, res) => {
 });
 ```
 
+```js
+// Update a job in db
+app.put("/job/:id", verifyToken, async (req, res) => {
+  const id = req.params.id;
+  const jobData = req.body;
+  const query = { _id: new ObjectId(id) };
+  const options = { upsert: true };
+  const updateDoc = {
+    $set: {
+      ...jobData,
+    },
+  };
+  const result = await jobsCollection.updateOne(query, updateDoc, options);
+  res.send(result);
+});
+```
+
 ### Delete a specific data from the database
 
 ```js
@@ -437,5 +454,19 @@ app.get("/logout", (req, res) => {
       maxAge: 0,
     })
     .send({ success: true });
+});
+```
+
+```js
+// Get all jobs posted by a specific user
+app.get("/jobs/:email", verifyToken, async (req, res) => {
+  const tokenEmail = req.user.email;
+  const email = req.params.email;
+  if (tokenEmail !== email) {
+    return res.status(403).send({ message: "forbidden access" });
+  }
+  const query = { "buyer.email": email };
+  const result = await jobsCollection.find(query).toArray();
+  res.send(result);
 });
 ```
