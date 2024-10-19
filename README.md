@@ -8,6 +8,9 @@
 - [Express-Cors](https://expressjs.com/id/resources/middleware/cors.html)
 - [MongoDb-CRUD](https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/)
 - [DotEnv](https://www.npmjs.com/package/dotenv)
+- [JSON Web Token](https://jwt.io/libraries?language=Node.js)
+- [JSON Web Token GIT](https://github.com/auth0/node-jsonwebtoken)
+- [Cookie Parser](https://expressjs.com/en/resources/middleware/cookie-parser.html)
 
 ## Server Site SetUp
 
