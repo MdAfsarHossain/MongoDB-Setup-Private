@@ -289,6 +289,46 @@ const handleAddCoffee = (event) => {
 <form onSubmit={handleAddCoffee}></form>;
 ```
 
+```js
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+
+  const form = e.target;
+  const job_title = form.job_title.value;
+  const email = form.email.value;
+  const deadline = startDate;
+  const category = form.category.value;
+  const min_price = parseFloat(form.min_price.value);
+  const max_price = parseFloat(form.max_price.value);
+  const description = form.description.value;
+
+  const jobData = {
+    job_title,
+    deadline,
+    category,
+    min_price,
+    max_price,
+    description,
+    buyer: {
+      email,
+      name: user?.displayName,
+      photo: user?.photoURL,
+    },
+  };
+
+  try {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_URL}/job`,
+      jobData
+    );
+    toast.success("Job created successfully!");
+    navigate("/myPostedJobs");
+  } catch (error) {
+    toast.error("Failed to create job. Please try again.");
+  }
+};
+```
+
 ### Send data to the server for create a new data
 
 ```js
