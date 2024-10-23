@@ -25,7 +25,7 @@ index.js
 ```
 
 ```js
-npm install express cors mongodb dotenv
+npm install express cors mongodb dotenv jsonwebtoken cookie-parser
 ```
 
 ```js
@@ -378,6 +378,15 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {};
 ```
 
 ## [JWT (JSON Web Token)](https://jwt.io/)
+
+```js
+npm install jsonwebtoken
+
+```
+
+```js
+npm install cookie-parser
+```
 
 ```js
 ## Generate Cookie
