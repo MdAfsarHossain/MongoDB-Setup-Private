@@ -476,6 +476,18 @@ app.get("/logout", (req, res) => {
 ```
 
 ```js
+// Log out user
+const logOut = async () => {
+  setLoading(true);
+  const { data } = await axios(`${import.meta.env.VITE_API_URL}/logout`, {
+    withCredentials: true,
+  });
+
+  return signOut(auth);
+};
+```
+
+```js
 // Get all jobs posted by a specific user
 app.get("/jobs/:email", verifyToken, async (req, res) => {
   const tokenEmail = req.user.email;
