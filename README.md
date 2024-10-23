@@ -246,6 +246,19 @@ run().catch(console.dir);
   },
 ```
 
+```jsx
+{
+    path: "/job/:id",
+    element: (
+      <PrivateRoute>
+        <JobDetails />
+      </PrivateRoute>
+    ),
+    loader: ({ params }) =>
+    fetch(`${import.meta.env.VITE_API_URL}/job/${params.id}`),
+},
+```
+
 ### Update Route
 
 ```js
