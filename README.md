@@ -113,6 +113,16 @@ app.get("/users", async (req, res) => {
 });
 ```
 
+```js
+// Write here all jobs posted by a specific user
+app.get("/jobs/:email", virifyToken, async (req, res) => {
+  const email = req.params.email;
+  const query = { "buyer.email": email };
+  const result = await jobsCollection.find(query).toArray();
+  res.send(result);
+});
+```
+
 ### Get Specific data from the database
 
 ```js
