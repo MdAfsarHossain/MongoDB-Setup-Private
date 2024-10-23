@@ -407,7 +407,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(cookieParser());
+app.use(cookieParser()); // CookieParser use for to get token from the cookie store.
 ```
 
 ```js
