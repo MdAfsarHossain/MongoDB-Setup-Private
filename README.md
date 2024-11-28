@@ -563,3 +563,61 @@ app.get("/jobs/:email", verifyToken, async (req, res) => {
   res.send(result);
 });
 ```
+
+### Server Deployment Steps
+
+1.  Comment await commands outside api methods for solving gateway timeout error
+
+```js
+//comment following commands
+await client.connect();
+await client.db("admin").command({ ping: 1 });
+```
+
+2. Create `vercel.json` file for configuring server
+
+```js
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index.js",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    }
+  ]
+}
+```
+
+3. Add Your production domains to your cors configuration. Don't use the URL we have provided inside origin. Replace them with your own.
+
+```js
+//Must remove "/" from your production URL
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://cardoctor-bd.web.app",
+      "https://cardoctor-bd.firebaseapp.com",
+    ],
+  })
+);
+```
+
+4. Deploy to Vercel
+
+```js
+vercel
+vercel --prod
+```
+
+- After completed the deployment . click on inspect link and copy the production domain
+- setup your environment variables in vercel
+- check your public API
+  <img src="code.jpg">
