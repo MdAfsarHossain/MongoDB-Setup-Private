@@ -77,6 +77,16 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 ```
 
 ```js
+DB_USER=crafted-comfort
+DB_PASSWORD=wLrRKcioJcWJBivC
+ACCESS_TOKEN_SECRET=829a6fd3722e282e5594607b90c2382045f09015c179b4e6b7046f9dde1b8f38974bf37d8a705850992856566c8a547de15dbd0d41c1132e84b96adf2e190c5
+```
+
+```js
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@main.mq0mae1.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
+```
+
+```js
 // Mongodb configuration
 const uri = "mongodb://localhost:27017";
 
