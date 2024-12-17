@@ -83,7 +83,7 @@ ACCESS_TOKEN_SECRET=829a6fd3722e282e5594607b90c2382045f09015c179b4e6b7046f9dde1b
 ```
 
 ```js
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@main.mq0mae1.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@main.mq0mae1.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
 ```
 
 ```js
@@ -571,6 +571,58 @@ app.get("/jobs/:email", verifyToken, async (req, res) => {
   const query = { "buyer.email": email };
   const result = await jobsCollection.find(query).toArray();
   res.send(result);
+});
+```
+
+### [Pagination]()
+
+```js
+// Gell All Visas Data from DB for Pagination
+app.get("/all-visa-for-pagination", async (req, res) => {
+  const currentPage = parseInt(req.query.page) - 1;
+  const perPageItems = parseInt(req.query.size);
+  const filterData = req.query.filter;
+  const search = req?.query?.search;
+
+  let query = {
+    countryName: { $regex: search, $options: "i" },
+  };
+
+  if (filterData && filterData !== "All VISA") {
+    query.selectedVisaType = filterData;
+  }
+
+  let options = {};
+  @REM if (sort) {
+  @REM   options = { sort: { servicePrice: sort === "asc" ? 1 : -1 } };
+  @REM }
+
+  const result = await visaCollection
+    .find(query, options)
+    .skip(currentPage * perPageItems)
+    .limit(perPageItems)
+    .toArray();
+  res.send(result);
+});
+```
+
+```js
+// Get all services data form the Database
+app.get("/visa-count", async (req, res) => {
+  const filterData = req?.query?.filter;
+  const search = req?.query?.search;
+
+  let query = {
+    countryName: { $regex: search, $options: "i" },
+  };
+
+  if (filterData && filterData !== "All VISA") {
+    query.selectedVisaType = filterData;
+  }
+
+  const count = await visaCollection.countDocuments(query);
+
+  res.send({ count });
 });
 ```
 
